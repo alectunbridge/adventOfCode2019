@@ -1,18 +1,13 @@
 package advent;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DayOne {
-    public boolean someLibraryMethod() {
-        return true;
-    }
 
     public int calculateFuelRequired(int mass) {
         return (int) Math.floor(mass / 3.0) - 2;

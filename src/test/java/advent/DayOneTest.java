@@ -9,7 +9,7 @@ public class DayOneTest {
     private DayOne dayOne;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         dayOne = new DayOne();
     }
 

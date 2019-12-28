@@ -2,27 +2,45 @@ package advent;
 
 import org.junit.Test;
 
-import java.util.List;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 
 public class DayTwoTest {
     @Test
-    public void readInputIntoArray() {
-        DayTwo dayTwo = new DayTwo();
-        List<Integer> input = dayTwo.parseInput("1,9,10,3,2,3,11,0,99,30,40,50");
-        assertThat(input).containsExactly(1,9,10,3,2,3,11,0,99,30,40,50);
-        List<Integer> output1 = dayTwo.executeNextCommand();
-        assertThat(output1).containsExactly(1,9,10,70, 2,3,11,0, 99, 30,40,50);
-        List<Integer> output2 = dayTwo.executeNextCommand();
-        assertThat(output2).containsExactly(3500,9,10,70, 2,3,11,0, 99, 30,40,50);
-        List<Integer> output3 = dayTwo.executeNextCommand();
-        assertThat(output3).isNull();
-    }
-
-    @Test
-    public void execute() {
+    public void testCase1() {
         DayTwo dayTwo = new DayTwo("1,9,10,3,2,3,11,0,99,30,40,50");
         assertThat(dayTwo.execute()).containsExactly(3500,9,10,70, 2,3,11,0, 99, 30,40,50);
     }
+
+    @Test
+    public void testCase2() {
+        DayTwo dayTwo = new DayTwo("1,0,0,0,99");
+        assertThat(dayTwo.execute()).containsExactly(2,0,0,0,99);
+    }
+
+    @Test
+    public void testCase3() {
+        DayTwo dayTwo = new DayTwo("2,3,0,3,99");
+        assertThat(dayTwo.execute()).containsExactly(2,3,0,6,99);
+    }
+
+    @Test
+    public void testCase4() {
+        DayTwo dayTwo = new DayTwo("2,4,4,5,99,0");
+        assertThat(dayTwo.execute()).containsExactly(2,4,4,5,99,9801);
+    }
+
+    @Test
+    public void testCase5() {
+        DayTwo dayTwo = new DayTwo("1,1,1,4,99,5,6,0,99");
+        assertThat(dayTwo.execute()).containsExactly(30,1,1,4,2,5,6,0,99);
+    }
+
 }

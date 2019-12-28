@@ -10,7 +10,11 @@ import java.util.stream.Stream;
 public class DayOne {
 
     public int calculateFuelRequired(int mass) {
-        return (int) Math.floor(mass / 3.0) - 2;
+        int rawFuel = (int) Math.floor(mass / 3.0) - 2;
+        if(rawFuel <= 0){
+            return 0;
+        }
+        return rawFuel + calculateFuelRequired(rawFuel);
     }
 
     public static void main(String[] args) {

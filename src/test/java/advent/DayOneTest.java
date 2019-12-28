@@ -28,12 +28,12 @@ public class DayOneTest {
     @Test
     public void calculateFuelForMassOf1969() {
         int fuel = dayOne.calculateFuelRequired(1969);
-        assertThat(fuel).isEqualTo(654);
+        assertThat(fuel).isEqualTo(966);
     }
 
     @Test
     public void calculateFuelForMassOf100756() {
         int fuel = dayOne.calculateFuelRequired(100756);
-        assertThat(fuel).isEqualTo(33583);
+        assertThat(fuel).isEqualTo(50346);
     }
 }

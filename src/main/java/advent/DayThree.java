@@ -127,7 +127,7 @@ public class DayThree {
         return output.toString();
     }
 
-    public List<int[]> findIntersections() {
+    public int findDistanceToClosestIntersection() {
         List<int[]> intersections = new ArrayList<>();
         for(int y=0; y < maxHeight; y++){
             for (int x = 0; x < maxWidth; x++) {
@@ -136,6 +136,15 @@ public class DayThree {
                 }
             }
         }
-        return intersections;
+
+        int closestIntersection = Integer.MAX_VALUE;
+        for (int[] intersection : intersections) {
+            int manhattanDistance = intersection[0] + intersection[1];
+            if(manhattanDistance != 0 && manhattanDistance < closestIntersection){
+                closestIntersection = manhattanDistance;
+            }
+        }
+
+        return closestIntersection;
     }
 }

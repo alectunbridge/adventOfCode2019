@@ -1,5 +1,10 @@
 package advent;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,8 +153,8 @@ public class DayThree {
 
     public int findDistanceToClosestIntersection() {
         List<int[]> intersections = new ArrayList<>();
-        for(int y=0; y < maxHeight; y++){
-            for (int x = 0; x < maxWidth; x++) {
+        for(int y=0; y < circuitBoard1.length; y++){
+            for (int x = 0; x < circuitBoard1[0].length; x++) {
                 if(circuitBoard1[y][x] != '.' && circuitBoard2[y][x] != '.'){
                     intersections.add(new int[]{x,y});
                 }
@@ -165,5 +170,15 @@ public class DayThree {
         }
 
         return closestIntersection;
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        List<String> input = null;
+        Path path = Paths.get(DayThree.class.getClassLoader()
+                .getResource("input_day3.txt").toURI());
+        input = Files.readAllLines(path);
+
+        DayThree dayThree = new DayThree(input.get(0),input.get(1));
+        System.out.println(dayThree.findDistanceToClosestIntersection());
     }
 }

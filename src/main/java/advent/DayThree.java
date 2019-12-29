@@ -3,13 +3,24 @@ package advent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.lang.Math.abs;
 
 public class DayThree {
     private int maxHeight;
     private int maxWidth;
+    private int minHeight;
+    private int minWidth;
     private char[][] circuitBoard1;
     private char[][] circuitBoard2;
+
+    public int getMinHeight() {
+        return minHeight;
+    }
+
+    public int getMinWidth() {
+        return minWidth;
+    }
 
     public char[][] getCircuitBoard1() {
         return circuitBoard1;
@@ -46,8 +57,8 @@ public class DayThree {
     }
 
     private void addWireToCircuit(String[] pathSegments, char[][] circuitBoard) {
-        int x = 0;
-        int y = 0;
+        int x = abs(minWidth);
+        int y = abs(minHeight);
 
         for (String segment : pathSegments) {
             circuitBoard[y][x] = '+';
@@ -79,11 +90,11 @@ public class DayThree {
                     break;
             }
         }
-        circuitBoard[0][0] = 'o';
+        circuitBoard[abs(minHeight)][abs(minWidth)] = 'o';
     }
 
     private char[][] createEmptyCircuitBoard() {
-        char[][] circuitBoard = new char[maxHeight][maxWidth];
+        char[][] circuitBoard = new char[abs(minHeight)+maxHeight+1][abs(minWidth)+maxWidth+1];
         for (char[] row : circuitBoard) {
             Arrays.fill(row, '.');
         }
@@ -91,8 +102,8 @@ public class DayThree {
     }
 
     private void calculateCircuitBoardDimensions(String[] pathSegments) {
-        int width = 1;
-        int height = 1;
+        int width = 0;
+        int height = 0;
         for (String segment : pathSegments) {
             int segmentLength = Integer.parseInt(segment.substring(1));
             switch (segment.charAt(0)) {
@@ -104,14 +115,22 @@ public class DayThree {
                     break;
                 case 'L':
                     width -= segmentLength;
+                    if(width < minWidth){
+                        minWidth = width;
+                    }
                     break;
                 case 'U':
                     height += segmentLength;
                     if(height > maxHeight){
                         maxHeight = height;
                     }
+                    break;
                 case 'D':
                     height -= segmentLength;
+                    if(height < minHeight){
+                        minHeight = height;
+                    }
+                    break;
             }
         }
     }
@@ -139,7 +158,7 @@ public class DayThree {
 
         int closestIntersection = Integer.MAX_VALUE;
         for (int[] intersection : intersections) {
-            int manhattanDistance = intersection[0] + intersection[1];
+            int manhattanDistance = abs(-minWidth - intersection[0]) + abs(-minHeight - intersection[1]);
             if(manhattanDistance != 0 && manhattanDistance < closestIntersection){
                 closestIntersection = manhattanDistance;
             }

@@ -57,9 +57,20 @@ public class DayTwo {
         path = Paths.get(DayOne.class.getClassLoader()
                 .getResource("input_day2.txt").toURI());
         input = Files.readString(path);
-        DayTwo dayTwo = new DayTwo(input);
-        dayTwo.setAddress(1,12);
-        dayTwo.setAddress(2,2);
-        System.out.println(dayTwo.execute().get(0));
+
+        int noun = -1;
+        int verb = -1;
+        NOUN: for(noun = 0; noun<100; noun++){
+            for (verb = 0; verb<100; verb++) {
+                DayTwo dayTwo = new DayTwo(input);
+                dayTwo.setAddress(1, noun);
+                dayTwo.setAddress(2, verb);
+                if (dayTwo.execute().get(0) == 19690720) {
+                    break NOUN;
+                }
+            }
+        }
+        System.out.println(noun);
+        System.out.println(verb);
     }
 }

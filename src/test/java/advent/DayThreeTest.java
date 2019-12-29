@@ -16,16 +16,29 @@ public class DayThreeTest {
     }
 
     @Test
-    public void printWire() {
+    public void printFirstWire() {
         DayThree dayThree = new DayThree("R8,U5,L5,D3");
-        assertThat(dayThree.toString()).isEqualTo(
+        assertThat(dayThree.drawCircuitBoard(dayThree.getCircuitBoard1())).isEqualTo(
                         "...+----+\n" +
                         "...|....|\n" +
                         "...|....|\n" +
                         "...|....|\n" +
                         "........|\n" +
-                        "+-------+\n"
+                        "o-------+\n"
         );
+    }
 
+    @Test
+    public void printSecondWire() {
+        DayThree dayThree = new DayThree("R8,U5,L5,D3", "U7,R6,D4,L4");
+        assertThat(dayThree.drawCircuitBoard(dayThree.getCircuitBoard2())).isEqualTo(
+                        "+-----+..\n" +
+                        "|.....|..\n" +
+                        "|.....|..\n" +
+                        "|.....|..\n" +
+                        "|.----+..\n" +
+                        "|........\n" +
+                        "|........\n" +
+                        "o........\n");
     }
 }

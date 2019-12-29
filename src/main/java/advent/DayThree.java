@@ -3,9 +3,29 @@ package advent;
 import java.util.Arrays;
 
 public class DayThree {
-    private char[][] circuitBoard;
     private int maxHeight;
     private int maxWidth;
+    private char[][] circuitBoard1;
+    private char[][] circuitBoard2;
+
+    public char[][] getCircuitBoard1() {
+        return circuitBoard1;
+    }
+
+    public char[][] getCircuitBoard2() {
+        return circuitBoard2;
+    }
+
+    public DayThree(String wire1, String wire2) {
+        String[] pathSegments1 = wire1.split(",");
+        String[] pathSegments2 = wire2.split(",");
+        calculateCircuitBoardDimensions(pathSegments1);
+        calculateCircuitBoardDimensions(pathSegments2);
+        circuitBoard1 = createEmptyCircuitBoard();
+        circuitBoard2 = createEmptyCircuitBoard();
+        addWireToCircuit(pathSegments1, circuitBoard1);
+        addWireToCircuit(pathSegments2, circuitBoard2);
+    }
 
     public int getMaxWidth() {
         return maxWidth;
@@ -18,11 +38,11 @@ public class DayThree {
     public DayThree(String input) {
         String[] pathSegments = input.split(",");
         calculateCircuitBoardDimensions(pathSegments);
-        createEmptyCircuitBoard();
-        addWireToCircuit(pathSegments);
+        circuitBoard1 = createEmptyCircuitBoard();
+        addWireToCircuit(pathSegments, circuitBoard1);
     }
 
-    private void addWireToCircuit(String[] pathSegments) {
+    private void addWireToCircuit(String[] pathSegments, char[][] circuitBoard) {
         int x = 0;
         int y = 0;
 
@@ -59,11 +79,12 @@ public class DayThree {
         circuitBoard[0][0] = 'o';
     }
 
-    private void createEmptyCircuitBoard() {
-        circuitBoard = new char[maxHeight][maxWidth];
+    private char[][] createEmptyCircuitBoard() {
+        char[][] circuitBoard = new char[maxHeight][maxWidth];
         for (char[] row : circuitBoard) {
             Arrays.fill(row, '.');
         }
+        return circuitBoard;
     }
 
     private void calculateCircuitBoardDimensions(String[] pathSegments) {
@@ -92,8 +113,7 @@ public class DayThree {
         }
     }
 
-    @Override
-    public String toString() {
+    public String drawCircuitBoard(char[][] circuitBoard) {
         StringBuilder output = new StringBuilder();
         for(int rowNo = circuitBoard.length-1; rowNo >= 0; rowNo--) {
             for (char cell : circuitBoard[rowNo]) {

@@ -1,6 +1,9 @@
 package advent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DayThree {
     private int maxHeight;
@@ -122,5 +125,17 @@ public class DayThree {
             output.append("\n");
         }
         return output.toString();
+    }
+
+    public List<int[]> findIntersections() {
+        List<int[]> intersections = new ArrayList<>();
+        for(int y=0; y < maxHeight; y++){
+            for (int x = 0; x < maxWidth; x++) {
+                if(circuitBoard1[y][x] != '.' && circuitBoard2[y][x] != '.'){
+                    intersections.add(new int[]{x,y});
+                }
+            }
+        }
+        return intersections;
     }
 }

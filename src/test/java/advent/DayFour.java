@@ -7,7 +7,18 @@ public class DayFour {
         boolean numbersNeverDecrease = true;
         for (int i = 0; i < chars.length-1; i++) {
             if(!repeatedDigits) {
-                repeatedDigits = chars[i]== chars[i +1];
+                boolean pairOfDigits = chars[i] == chars[i + 1];
+                if(pairOfDigits){
+                    boolean numberBeforeNotSame = true;
+                    boolean numberAfterNotTheSame = true;
+                    if( i!=0 ){
+                        numberBeforeNotSame = chars[i - 1] != chars[i];
+                    }
+                    if( i!=chars.length-2 ) {
+                        numberAfterNotTheSame = chars[i + 1] != chars[i + 2];
+                    }
+                    repeatedDigits = numberBeforeNotSame && numberAfterNotTheSame;
+                }
             }
             if(numbersNeverDecrease){
                 numbersNeverDecrease = chars[i]<=chars[i+1];

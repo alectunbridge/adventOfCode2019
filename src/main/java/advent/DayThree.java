@@ -18,6 +18,8 @@ public class DayThree {
     private int minWidth;
     private char[][] circuitBoard1;
     private char[][] circuitBoard2;
+    private String[] pathSegments1;
+    private String[] pathSegments2;
 
     public int getMinHeight() {
         return minHeight;
@@ -36,8 +38,8 @@ public class DayThree {
     }
 
     public DayThree(String wire1, String wire2) {
-        String[] pathSegments1 = wire1.split(",");
-        String[] pathSegments2 = wire2.split(",");
+        pathSegments1 = wire1.split(",");
+        pathSegments2 = wire2.split(",");
         calculateCircuitBoardDimensions(pathSegments1);
         calculateCircuitBoardDimensions(pathSegments2);
         circuitBoard1 = createEmptyCircuitBoard();
@@ -140,6 +142,66 @@ public class DayThree {
         }
     }
 
+    private List<int[]> findIntersections() {
+        List<int[]> intersections = new ArrayList<>();
+        for(int y=0; y < circuitBoard1.length; y++){
+            for (int x = 0; x < circuitBoard1[0].length; x++) {
+                if(circuitBoard1[y][x] != 'o' && circuitBoard1[y][x] != '.' && circuitBoard2[y][x] != '.'){
+                    intersections.add(new int[]{x,y});
+                }
+            }
+        }
+        return intersections;
+    }
+
+    private int findLengthOfWireToIntersection(String[] pathSegments, int[] intersection) {
+        int x = abs(minWidth);
+        int y = abs(minHeight);
+        int length = 0;
+        for (String segment : pathSegments) {
+            int segmentLength = Integer.parseInt(segment.substring(1));
+            switch (segment.charAt(0)) {
+                case 'R':
+                    for(int i=0; i<segmentLength; i++){
+                        x++;
+                        length++;
+                        if(x==intersection[0] && y==intersection[1]){
+                            return length;
+                        }
+                    }
+                    break;
+                case 'L':
+                    for(int i=0; i<segmentLength; i++){
+                        x--;
+                        length++;
+                        if(x==intersection[0] && y==intersection[1]){
+                            return length;
+                        }
+                    }
+                    break;
+                case 'U':
+                    for(int i=0; i<segmentLength; i++){
+                        y++;
+                        length++;
+                        if(x==intersection[0] && y==intersection[1]){
+                            return length;
+                        }
+                    }
+                    break;
+                case 'D':
+                    for(int i=0; i<segmentLength; i++){
+                        y--;
+                        length++;
+                        if(x==intersection[0] && y==intersection[1]){
+                            return length;
+                        }
+                    }
+                    break;
+            }
+        }
+        return -1;
+    }
+
     public String drawCircuitBoard(char[][] circuitBoard) {
         StringBuilder output = new StringBuilder();
         for(int rowNo = circuitBoard.length-1; rowNo >= 0; rowNo--) {
@@ -152,19 +214,12 @@ public class DayThree {
     }
 
     public int findDistanceToClosestIntersection() {
-        List<int[]> intersections = new ArrayList<>();
-        for(int y=0; y < circuitBoard1.length; y++){
-            for (int x = 0; x < circuitBoard1[0].length; x++) {
-                if(circuitBoard1[y][x] != '.' && circuitBoard2[y][x] != '.'){
-                    intersections.add(new int[]{x,y});
-                }
-            }
-        }
+        List<int[]> intersections = findIntersections();
 
         int closestIntersection = Integer.MAX_VALUE;
         for (int[] intersection : intersections) {
             int manhattanDistance = abs(-minWidth - intersection[0]) + abs(-minHeight - intersection[1]);
-            if(manhattanDistance != 0 && manhattanDistance < closestIntersection){
+            if(manhattanDistance < closestIntersection){
                 closestIntersection = manhattanDistance;
             }
         }
@@ -172,13 +227,28 @@ public class DayThree {
         return closestIntersection;
     }
 
+    public int findShortestSignalDelay() {
+        List<int[]> intersections = findIntersections();
+        int shortestDistance = Integer.MAX_VALUE;
+        for (int[] intersection : intersections) {
+            int distance = findLengthOfWireToIntersection(pathSegments1, intersection) +
+                    findLengthOfWireToIntersection(pathSegments2, intersection);
+            if(distance<shortestDistance){
+                shortestDistance = distance;
+            }
+        }
+        return shortestDistance;
+    }
+
     public static void main(String[] args) throws IOException, URISyntaxException {
         List<String> input = null;
+
         Path path = Paths.get(DayThree.class.getClassLoader()
                 .getResource("input_day3.txt").toURI());
         input = Files.readAllLines(path);
 
         DayThree dayThree = new DayThree(input.get(0),input.get(1));
         System.out.println(dayThree.findDistanceToClosestIntersection());
+        System.out.println(dayThree.findShortestSignalDelay());
     }
 }

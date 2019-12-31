@@ -9,9 +9,7 @@ public class DayFiveTest {
     @Test
     public void inputAndOutput() {
         StringBuilder input  = new StringBuilder("3,50,4,50");
-        for (int i = 0; i < 49; i++) {
-            input.append(",99");
-        }
+        input.append(",99".repeat(49));
         DayFive dayFive = new DayFive(input.toString());
         assertThat(dayFive.execute(1)).isEqualTo(1);
     }
@@ -30,7 +28,7 @@ public class DayFiveTest {
 
     @Test
     public void parameterModesSecondTestCase() {
-        DayFive dayFive = new DayFive("1101,100,-1,6,4,6,0,99");
+        DayFive dayFive = new DayFive("1101,100,-1,7,4,7,99,0");
         assertThat(dayFive.execute(0)).isEqualTo(99);
     }
 

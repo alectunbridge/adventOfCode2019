@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 public class DayFive {
@@ -43,62 +44,51 @@ public class DayFive {
 
                 int parameterModeBits = memory.get(instructionPointer) / 100;
                 boolean immediateMode1 = false;
-                if(parameterModeBits > 0){
-                    if(parameterModeBits%2==1){
+                if (parameterModeBits > 0) {
+                    if (parameterModeBits % 2 == 1) {
                         immediateMode1 = true;
                     }
                 }
-                output = immediateMode1?parameter1:memory.get(parameter1);
+                output = immediateMode1 ? parameter1 : memory.get(parameter1);
                 System.out.println(output);
                 instructionPointer += 2;
                 break;
             }
             case ADD: {
-                int parameter1 = memory.get(instructionPointer + 1);
-                int parameter2 = memory.get(instructionPointer + 2);
-                int toAddress = memory.get(instructionPointer + 3);
-
-                int parameterModeBits = memory.get(instructionPointer) / 100;
-                boolean immediateMode1 = false;
-                boolean immediateMode2 = false;
-                if(parameterModeBits > 0){
-                    if(parameterModeBits%2==1){
-                        immediateMode1 = true;
-                    }
-                    if(parameterModeBits>1){
-                        immediateMode2 = true;
-                    }
-                }
-
-                memory.set(toAddress, (immediateMode1?parameter1:memory.get(parameter1)) + (immediateMode2?parameter2:memory.get(parameter2)));
-                instructionPointer += 4;
+                applyBinaryOperator(Integer::sum);
                 break;
             }
             case MULTIPLY: {
-                int parameter1 = memory.get(instructionPointer + 1);
-                int parameter2 = memory.get(instructionPointer + 2);
-                int toAddress = memory.get(instructionPointer + 3);
-
-                int parameterModeBits = memory.get(instructionPointer) / 100;
-                boolean immediateMode1 = false;
-                boolean immediateMode2 = false;
-                if(parameterModeBits > 0){
-                    if(parameterModeBits%2==1){
-                        immediateMode1 = true;
-                    }
-                    if(parameterModeBits>1){
-                        immediateMode2 = true;
-                    }
-                }
-
-                memory.set(toAddress, (immediateMode1?parameter1:memory.get(parameter1)) * (immediateMode2?parameter2:memory.get(parameter2)));
-                instructionPointer += 4;
+                applyBinaryOperator((int1, int2) -> int1 * int2);
                 break;
             }
             default:
                 throw new UnsupportedOperationException();
         }
         return false;
+    }
+
+    private void applyBinaryOperator(BinaryOperator<Integer> binaryOperator) {
+        int parameter1 = memory.get(instructionPointer + 1);
+        int parameter2 = memory.get(instructionPointer + 2);
+        int toAddress = memory.get(instructionPointer + 3);
+
+        int parameterModeBits = memory.get(instructionPointer) / 100;
+        boolean immediateMode1 = false;
+        boolean immediateMode2 = false;
+        if (parameterModeBits > 0) {
+            if (parameterModeBits % 2 == 1) {
+                immediateMode1 = true;
+            }
+            if (parameterModeBits > 1) {
+                immediateMode2 = true;
+            }
+        }
+
+        int int1 = immediateMode1 ? parameter1 : memory.get(parameter1);
+        int int2 = immediateMode2 ? parameter2 : memory.get(parameter2);
+        memory.set(toAddress, binaryOperator.apply(int1, int2));
+        instructionPointer += 4;
     }
 
     public int execute(int input) {

@@ -21,4 +21,17 @@ public class DayFiveTest {
         DayFive dayFive = new DayFive("3,0,4,0,99");
         assertThat(dayFive.execute(7)).isEqualTo(7);
     }
+
+    @Test
+    public void parameterModesFirstTestCase() {
+        DayFive dayFive = new DayFive("1002,7,3,7,4,7,99,33");
+        assertThat(dayFive.execute(0)).isEqualTo(99);
+    }
+
+    @Test
+    public void parameterModesSecondTestCase() {
+        DayFive dayFive = new DayFive("1101,100,-1,6,4,6,0,99");
+        assertThat(dayFive.execute(0)).isEqualTo(99);
+    }
+
 }

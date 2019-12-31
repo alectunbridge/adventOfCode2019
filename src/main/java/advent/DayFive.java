@@ -26,7 +26,7 @@ public class DayFive {
     }
 
     private boolean executeNextCommand() {
-        int instruction = memory.get(instructionPointer);
+        int instruction = memory.get(instructionPointer) % 100;
         if (instruction == HALT) {
             return true;
         }
@@ -45,18 +45,44 @@ public class DayFive {
                 break;
             }
             case ADD: {
-                int fromAddress1 = memory.get(instructionPointer + 1);
-                int fromAddress2 = memory.get(instructionPointer + 2);
+                int parameter1 = memory.get(instructionPointer + 1);
+                int parameter2 = memory.get(instructionPointer + 2);
                 int toAddress = memory.get(instructionPointer + 3);
-                memory.set(toAddress, memory.get(fromAddress1) + memory.get(fromAddress2));
+
+                int parameterModeBits = memory.get(instructionPointer) / 100;
+                boolean immediateMode1 = false;
+                boolean immediateMode2 = false;
+                if(parameterModeBits > 0){
+                    if(parameterModeBits%2==1){
+                        immediateMode1 = true;
+                    }
+                    if(parameterModeBits>1){
+                        immediateMode2 = true;
+                    }
+                }
+
+                memory.set(toAddress, (immediateMode1?parameter1:memory.get(parameter1)) + (immediateMode2?parameter2:memory.get(parameter2)));
                 instructionPointer += 4;
                 break;
             }
             case MULTIPLY: {
-                int fromAddress1 = memory.get(instructionPointer + 1);
-                int fromAddress2 = memory.get(instructionPointer + 2);
+                int parameter1 = memory.get(instructionPointer + 1);
+                int parameter2 = memory.get(instructionPointer + 2);
                 int toAddress = memory.get(instructionPointer + 3);
-                memory.set(toAddress, memory.get(fromAddress1) * memory.get(fromAddress2));
+
+                int parameterModeBits = memory.get(instructionPointer) / 100;
+                boolean immediateMode1 = false;
+                boolean immediateMode2 = false;
+                if(parameterModeBits > 0){
+                    if(parameterModeBits%2==1){
+                        immediateMode1 = true;
+                    }
+                    if(parameterModeBits>1){
+                        immediateMode2 = true;
+                    }
+                }
+
+                memory.set(toAddress, (immediateMode1?parameter1:memory.get(parameter1)) * (immediateMode2?parameter2:memory.get(parameter2)));
                 instructionPointer += 4;
                 break;
             }

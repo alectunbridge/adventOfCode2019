@@ -39,8 +39,17 @@ public class DayFive {
                 break;
             }
             case OUTPUT: {
-                int fromAddress = memory.get(instructionPointer + 1);
-                output = memory.get(fromAddress);
+                int parameter1 = memory.get(instructionPointer + 1);
+
+                int parameterModeBits = memory.get(instructionPointer) / 100;
+                boolean immediateMode1 = false;
+                if(parameterModeBits > 0){
+                    if(parameterModeBits%2==1){
+                        immediateMode1 = true;
+                    }
+                }
+                output = immediateMode1?parameter1:memory.get(parameter1);
+                System.out.println(output);
                 instructionPointer += 2;
                 break;
             }
@@ -109,9 +118,10 @@ public class DayFive {
         Path path = null;
         String input = null;
         path = Paths.get(DayOne.class.getClassLoader()
-                .getResource("input_day2.txt").toURI());
+                .getResource("input_day5.txt").toURI());
         input = Files.readString(path);
 
-        //TODO complete this for day five
+        DayFive dayFive = new DayFive(input);
+        dayFive.execute(1);
     }
 }

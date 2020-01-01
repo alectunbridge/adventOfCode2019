@@ -32,4 +32,15 @@ public class DayFiveTest {
         assertThat(dayFive.execute(0)).isEqualTo(99);
     }
 
+    @Test
+    public void partTwoEqualsFalse() {
+        DayFive dayFive = new DayFive("3,9,8,9,10,9,4,9,99,-1,8");
+        assertThat(dayFive.execute(1)).isEqualTo(0);
+    }
+
+    @Test
+    public void partTwoEqualsTrue() {
+        DayFive dayFive = new DayFive("3,9,8,9,10,9,4,9,99,-1,8");
+        assertThat(dayFive.execute(8)).isEqualTo(1);
+    }
 }

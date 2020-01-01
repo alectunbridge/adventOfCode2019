@@ -16,9 +16,10 @@ public class DayFive {
 
     private static final int ADD = 1;
     private static final int MULTIPLY = 2;
-    private static final int HALT = 99;
     private static final int INPUT = 3;
     private static final int OUTPUT = 4;
+    private static final int EQUALS = 8;
+    private static final int HALT = 99;
     private List<Integer> memory;
     private int instructionPointer = 0;
     private int input;
@@ -56,8 +57,12 @@ public class DayFive {
                 applyBinaryOperator((int1, int2) -> int1 * int2);
                 break;
             }
+            case EQUALS: {
+                applyBinaryOperator((int1, int2) -> int1.equals(int2) ? 1 : 0);
+                break;
+            }
             default:
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("OPCODE:" + instruction);
         }
         return false;
     }

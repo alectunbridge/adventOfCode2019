@@ -8,9 +8,7 @@ public class DayFiveTest {
 
     @Test
     public void inputAndOutput() {
-        StringBuilder input  = new StringBuilder("3,50,4,50");
-        input.append(",99".repeat(49));
-        DayFive dayFive = new DayFive(input.toString());
+        DayFive dayFive = new DayFive("3,50,4,50" + ",99".repeat(49));
         assertThat(dayFive.execute(1)).isEqualTo(1);
     }
 
@@ -42,5 +40,17 @@ public class DayFiveTest {
     public void partTwoEqualsTrue() {
         DayFive dayFive = new DayFive("3,9,8,9,10,9,4,9,99,-1,8");
         assertThat(dayFive.execute(8)).isEqualTo(1);
+    }
+
+    @Test
+    public void lessThanFalse() {
+        DayFive dayFive = new DayFive("3,9,7,9,10,9,4,9,99,-1,8");
+        assertThat(dayFive.execute(9)).isEqualTo(0);
+    }
+
+    @Test
+    public void lessThanTrue() {
+        DayFive dayFive = new DayFive("3,9,7,9,10,9,4,9,99,-1,8");
+        assertThat(dayFive.execute(7)).isEqualTo(1);
     }
 }

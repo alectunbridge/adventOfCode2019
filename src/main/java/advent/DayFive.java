@@ -1,7 +1,5 @@
 package advent;
 
-import com.google.common.base.Function;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -10,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DayFive {
@@ -18,6 +17,7 @@ public class DayFive {
     private static final int MULTIPLY = 2;
     private static final int INPUT = 3;
     private static final int OUTPUT = 4;
+    private static final int LESS_THAN = 7;
     private static final int EQUALS = 8;
     private static final int HALT = 99;
     private List<Integer> memory;
@@ -59,6 +59,10 @@ public class DayFive {
             }
             case EQUALS: {
                 applyBinaryOperator((int1, int2) -> int1.equals(int2) ? 1 : 0);
+                break;
+            }
+            case LESS_THAN: {
+                applyBinaryOperator((int1, int2) -> int1 < int2 ? 1 : 0);
                 break;
             }
             default:

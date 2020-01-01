@@ -53,4 +53,28 @@ public class DayFiveTest {
         DayFive dayFive = new DayFive("3,9,7,9,10,9,4,9,99,-1,8");
         assertThat(dayFive.execute(7)).isEqualTo(1);
     }
+
+    @Test
+    public void equalsImmediateModeFalse() {
+        DayFive dayFive = new DayFive("3,3,1108,-1,8,3,4,3,99");
+        assertThat(dayFive.execute(9)).isEqualTo(0);
+    }
+
+    @Test
+    public void equalsImmediateModeTrue() {
+        DayFive dayFive = new DayFive("3,3,1108,-1,8,3,4,3,99");
+        assertThat(dayFive.execute(8)).isEqualTo(1);
+    }
+
+    @Test
+    public void lessThanImmediateModeFalse() {
+        DayFive dayFive = new DayFive("3,3,1107,-1,8,3,4,3,99");
+        assertThat(dayFive.execute(9)).isEqualTo(0);
+    }
+
+    @Test
+    public void lessThanImmediateModeTrue() {
+        DayFive dayFive = new DayFive("3,3,1107,-1,8,3,4,3,99");
+        assertThat(dayFive.execute(7)).isEqualTo(1);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DayFive {
@@ -17,6 +18,8 @@ public class DayFive {
     private static final int MULTIPLY = 2;
     private static final int INPUT = 3;
     private static final int OUTPUT = 4;
+    private static final int JUMP_IF_FALSE = 5;
+    private static final int JUMP_IF_TRUE = 6;
     private static final int LESS_THAN = 7;
     private static final int EQUALS = 8;
     private static final int HALT = 99;
@@ -36,6 +39,14 @@ public class DayFive {
         }
 
         switch (instruction) {
+            case ADD: {
+                applyBinaryOperator(Integer::sum);
+                break;
+            }
+            case MULTIPLY: {
+                applyBinaryOperator((int1, int2) -> int1 * int2);
+                break;
+            }
             case INPUT: {
                 int toAddress = memory.get(instructionPointer + 1);
                 memory.set(toAddress, input);
@@ -49,12 +60,12 @@ public class DayFive {
                 instructionPointer += 2;
                 break;
             }
-            case ADD: {
-                applyBinaryOperator(Integer::sum);
+            case JUMP_IF_FALSE: {
+                jump(int11 -> int11 != 0);
                 break;
             }
-            case MULTIPLY: {
-                applyBinaryOperator((int1, int2) -> int1 * int2);
+            case JUMP_IF_TRUE: {
+                jump(int11 -> int11 == 0);
                 break;
             }
             case EQUALS: {
@@ -69,6 +80,19 @@ public class DayFive {
                 throw new UnsupportedOperationException("OPCODE:" + instruction);
         }
         return false;
+    }
+
+    private void jump(Predicate<Integer> condition) {
+        int parameter1 = memory.get(instructionPointer + 1);
+        int parameter2 = memory.get(instructionPointer + 2);
+
+        int int1 = getParameterValue1(parameter1);
+        int int2 = getParameterValue2(parameter2);
+        if (condition.test(int1)) {
+            instructionPointer = int2;
+        } else {
+            instructionPointer += 3;
+        }
     }
 
     private void applyBinaryOperator(BinaryOperator<Integer> binaryOperator) {
@@ -119,6 +143,6 @@ public class DayFive {
         input = Files.readString(path);
 
         DayFive dayFive = new DayFive(input);
-        dayFive.execute(1);
+        dayFive.execute(5);
     }
 }

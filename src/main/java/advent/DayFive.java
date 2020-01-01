@@ -1,5 +1,7 @@
 package advent;
 
+import com.google.common.base.Function;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -41,15 +43,7 @@ public class DayFive {
             }
             case OUTPUT: {
                 int parameter1 = memory.get(instructionPointer + 1);
-
-                int parameterModeBits = memory.get(instructionPointer) / 100;
-                boolean immediateMode1 = false;
-                if (parameterModeBits > 0) {
-                    if (parameterModeBits % 2 == 1) {
-                        immediateMode1 = true;
-                    }
-                }
-                output = immediateMode1 ? parameter1 : memory.get(parameter1);
+                output = getParameterValue1(parameter1);
                 System.out.println(output);
                 instructionPointer += 2;
                 break;
@@ -73,22 +67,30 @@ public class DayFive {
         int parameter2 = memory.get(instructionPointer + 2);
         int toAddress = memory.get(instructionPointer + 3);
 
-        int parameterModeBits = memory.get(instructionPointer) / 100;
-        boolean immediateMode1 = false;
-        boolean immediateMode2 = false;
-        if (parameterModeBits > 0) {
-            if (parameterModeBits % 2 == 1) {
-                immediateMode1 = true;
-            }
-            if (parameterModeBits > 1) {
-                immediateMode2 = true;
-            }
-        }
-
-        int int1 = immediateMode1 ? parameter1 : memory.get(parameter1);
-        int int2 = immediateMode2 ? parameter2 : memory.get(parameter2);
+        int int1 = getParameterValue1(parameter1);
+        int int2 = getParameterValue2(parameter2);
         memory.set(toAddress, binaryOperator.apply(int1, int2));
         instructionPointer += 4;
+    }
+
+    private int getParameterValue1(int parameter) {
+        return getParameterValue(parameter, parameterModeBits -> parameterModeBits % 2 == 1);
+    }
+
+    private int getParameterValue2(int parameter) {
+        return getParameterValue(parameter, parameterModeBits -> parameterModeBits > 1);
+    }
+
+    private int getParameterValue(int parameter, Function<Integer, Boolean> isImmediateMode) {
+        boolean paramIsImmediate = false;
+        int parameterModeBits = memory.get(instructionPointer) / 100;
+        if (parameterModeBits > 0) {
+            paramIsImmediate = isImmediateMode.apply(parameterModeBits);
+        }
+        if (paramIsImmediate) {
+            return parameter;
+        }
+        return memory.get(parameter);
     }
 
     public int execute(int input) {
@@ -98,10 +100,6 @@ public class DayFive {
             terminated = executeNextCommand();
         }
         return output;
-    }
-
-    public void setAddress(int address, int value) {
-        memory.set(address, value);
     }
 
     public static void main(String args[]) throws URISyntaxException, IOException {

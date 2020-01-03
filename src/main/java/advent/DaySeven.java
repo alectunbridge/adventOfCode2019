@@ -1,5 +1,7 @@
 package advent;
 
+import org.apache.commons.collections4.iterators.PermutationIterator;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -172,6 +174,20 @@ public class DaySeven {
                 .getResource("input_day7.txt").toURI());
         input = Files.readString(path);
 
-        //TODO
+        int maxThrusterPower = 0;
+        PermutationIterator<Integer> permutationIterator = new PermutationIterator<>(Arrays.asList(0,1,2,3,4));
+        while(permutationIterator.hasNext()){
+            List<Integer> phaseSettings = permutationIterator.next();
+            int thrusterPower = getThrusterPower(input,
+                    phaseSettings.get(0),
+                    phaseSettings.get(1),
+                    phaseSettings.get(2),
+                    phaseSettings.get(3),
+                    phaseSettings.get(4));
+            if(thrusterPower>maxThrusterPower){
+                maxThrusterPower = thrusterPower;
+            }
+        }
+        System.out.println(maxThrusterPower);
     }
 }
